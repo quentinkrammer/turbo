@@ -14,6 +14,7 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react-refresh"],
+  ignorePatterns: ["**/*.cjs"],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
