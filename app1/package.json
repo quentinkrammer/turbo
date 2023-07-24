@@ -26,6 +26,7 @@
     "prettier-config-custom": "workspace:*",
     "eslint": "^8.44.0",
     "typescript": "^5.0.2",
+    "tsconfig": "workspace:*",
     "vite": "^4.4.0"
   }
 }
