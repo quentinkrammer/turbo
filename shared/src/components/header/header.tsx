@@ -1,6 +1,6 @@
+import classNames from "classnames";
 import { css } from "goober";
 import logo from "../../assets/logo.png";
-import classNames from "classnames";
 
 export default function Header() {
   return (

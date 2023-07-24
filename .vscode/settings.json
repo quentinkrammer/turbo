@@ -1,7 +1,10 @@
 {
-    "editor.formatOnSave": true,
-    "prettier.configPath": "",
-    "prettier.enableDebugLogs": true,
-    "prettier.ignorePath": "",
-    "prettier.useEditorConfig": false
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "prettier.configPath": "",
+  "prettier.enableDebugLogs": true,
+  "prettier.ignorePath": "",
+  "prettier.useEditorConfig": false
 }
