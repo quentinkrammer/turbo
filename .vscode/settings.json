@@ -3,8 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
-  "prettier.configPath": "",
+  "prettier.configPath": ".prettierrc.js",
   "prettier.enableDebugLogs": true,
-  "prettier.ignorePath": "",
   "prettier.useEditorConfig": false
 }
