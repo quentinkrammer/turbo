@@ -8,3 +8,7 @@ body {
   height: 100dvh;
   font-family: var(--font-family);
 }
+
+body::after {
+  content: "bar";
+}
