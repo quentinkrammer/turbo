@@ -12,6 +12,8 @@
     "stylefix": "prettier . --write"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "antd": "^5.7.3",
     "classnames": "^2.3.2",
     "goober": "^2.1.13",
     "primeicons": "^6.0.1",
