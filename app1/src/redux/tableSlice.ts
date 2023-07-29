@@ -14,6 +14,12 @@ type TableState = Array<{
   company: string;
   email: string;
 }>;
+type HasiData = Array<{ name: string; spezies: string }>;
+const initialState2: HasiData = [
+  { name: "diva", spezies: "süßmaus" },
+  { name: "bärchen", spezies: "süßhase" },
+  { name: "bärmeister", spezies: "kuschelhasel" },
+];
 const initialState: TableState = [
   {
     _id: "64c509ab63ea4926884a58a5",
@@ -13518,10 +13524,19 @@ export const tableSlice = createSlice({
     read: (state) => {
       return state;
     },
+    sortName: (state) => {
+      return state.slice().sort(function (a, b) {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
+    },
   },
 });
 
-export const { read } = tableSlice.actions;
+export const { read, sortName } = tableSlice.actions;
 
 export const selectTableData = (state: RootState) => state.table;
 
