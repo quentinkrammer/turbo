@@ -13553,6 +13553,7 @@ export const tableSlice = createSlice({
 
 export const { read, sortName } = tableSlice.actions;
 
-export const selectTableData = (state: RootState) => state.table.data;
+export const selectTableData = (state: RootState) =>
+  state.table.data.slice(1, 5);
 
 export default tableSlice.reducer;
