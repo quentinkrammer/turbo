@@ -12,7 +12,7 @@ export function CustomTable<TObj extends { [index: string]: number | string }>({
   return (
     <DataTable value={data}>
       {orderedColumnKeys.map((column, index) => (
-        <Column sortable key={`${column}_${index}`} field={column} />
+        <Column key={`${column}_${index}`} field={column} />
       ))}
     </DataTable>
   );

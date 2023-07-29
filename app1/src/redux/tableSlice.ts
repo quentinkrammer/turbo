@@ -13523,7 +13523,7 @@ const initialData2: TableConfig["data"] = [
 
 const initialState: TableConfig = {
   sort: true,
-  data: initialData1,
+  data: initialData2,
 };
 
 export const tableSlice = createSlice({
@@ -13534,7 +13534,7 @@ export const tableSlice = createSlice({
       return state;
     },
     sortName: ({ data, sort }) => {
-      return {
+      const sorted = {
         sort: !sort,
         data: data.slice().sort(function (a, b) {
           const nameA = a.name.toLowerCase();
@@ -13544,6 +13544,9 @@ export const tableSlice = createSlice({
           return 0;
         }),
       };
+
+      console.log("sorted");
+      return sorted;
     },
   },
 });
