@@ -14,13 +14,17 @@ type TableState = Array<{
   company: string;
   email: string;
 }>;
-type HasiData = Array<{ name: string; spezies: string }>;
-const initialState2: HasiData = [
+type TableConfig = {
+  data: Array<{ name: string; [index: string]: string | number }>;
+  sort: boolean;
+};
+
+const initialData1: TableConfig["data"] = [
   { name: "diva", spezies: "süßmaus" },
   { name: "bärchen", spezies: "süßhase" },
   { name: "bärmeister", spezies: "kuschelhasel" },
 ];
-const initialState: TableState = [
+const initialData2: TableConfig["data"] = [
   {
     _id: "64c509ab63ea4926884a58a5",
     index: 0,
@@ -13517,6 +13521,11 @@ const initialState: TableState = [
   },
 ];
 
+const initialState: TableConfig = {
+  sort: true,
+  data: initialData1,
+};
+
 export const tableSlice = createSlice({
   name: "table",
   initialState,
@@ -13524,20 +13533,23 @@ export const tableSlice = createSlice({
     read: (state) => {
       return state;
     },
-    sortName: (state) => {
-      return state.slice().sort(function (a, b) {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
+    sortName: ({ data, sort }) => {
+      return {
+        sort: !sort,
+        data: data.slice().sort(function (a, b) {
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+          if (nameA < nameB) return sort ? -1 : 1;
+          if (nameA > nameB) return sort ? 1 : -1;
+          return 0;
+        }),
+      };
     },
   },
 });
 
 export const { read, sortName } = tableSlice.actions;
 
-export const selectTableData = (state: RootState) => state.table;
+export const selectTableData = (state: RootState) => state.table.data;
 
 export default tableSlice.reducer;
