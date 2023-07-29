@@ -5,7 +5,6 @@
     "lib": ["es2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "checkJs": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -20,7 +19,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,    
+    "checkJs": true,
   },
   "references": [{ "path": "./tsconfig.node.json" }]
 }
