@@ -1,21 +1,18 @@
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 
-type TableData = Array<{ name: string; spezies: string }>;
-
-export function CustomTable() {
-  const data: TableData = [
-    { name: "diva", spezies: "süßmaus" },
-    { name: "bärchen", spezies: "süßhase" },
-    { name: "bärmeister", spezies: "kuschelhasel" },
-  ];
-
-  const orderedColumnKeys: Array<keyof TableData[number]> = ["name", "spezies"];
+export type CustomTableProps<TObj extends object> = {
+  data: Array<TObj>;
+};
+export function CustomTable<TObj extends { [index: string]: number | string }>({
+  data,
+}: CustomTableProps<TObj>) {
+  const orderedColumnKeys = Object.keys(data[0] ?? []);
 
   return (
     <DataTable value={data}>
-      {orderedColumnKeys.map((column) => (
-        <Column field={column} />
+      {orderedColumnKeys.map((column, index) => (
+        <Column sortable key={`${column}_${index}`} field={column} />
       ))}
     </DataTable>
   );

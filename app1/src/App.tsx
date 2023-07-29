@@ -1,11 +1,13 @@
 import { CustomTable } from "shared";
-import { Counter } from "./components/Counter";
+import { useAppSelector } from "./redux/hooks";
+import { selectTableData } from "./redux/tableSlice";
 
 function App() {
+  const data = useAppSelector(selectTableData);
+
   return (
     <>
-      <CustomTable />
-      <Counter />
+      <CustomTable data={data} />
     </>
   );
 }
