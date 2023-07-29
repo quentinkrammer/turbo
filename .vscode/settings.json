@@ -5,5 +5,8 @@
   },
   "prettier.configPath": ".prettierrc.js",
   "prettier.enableDebugLogs": true,
-  "prettier.useEditorConfig": false
+  "prettier.useEditorConfig": false,
+  "search.exclude": {
+    "**/dist": true
+  }
 }
