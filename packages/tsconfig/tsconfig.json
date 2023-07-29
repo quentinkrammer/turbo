@@ -19,8 +19,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,    
-    "checkJs": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "checkJs": true
   },
   "references": [{ "path": "./tsconfig.node.json" }]
 }
