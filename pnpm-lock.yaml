@@ -10,9 +10,6 @@ importers:
       prettier:
         specifier: ^3.0.0
         version: 3.0.0
-      prettier-config-custom:
-        specifier: workspace:*
-        version: link:packages/prettier-config-custom
 
   app1:
     dependencies:
@@ -50,12 +47,6 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../packages/eslint-config-custom
-      prettier:
-        specifier: ^3.0.0
-        version: 3.0.0
-      prettier-config-custom:
-        specifier: workspace:*
-        version: link:../packages/prettier-config-custom
       tsconfig:
         specifier: workspace:*
         version: link:../packages/tsconfig
@@ -83,8 +74,6 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.1
         version: 0.4.1(eslint@8.44.0)
-
-  packages/prettier-config-custom: {}
 
   packages/tsconfig: {}
 
@@ -136,12 +125,6 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../packages/eslint-config-custom
-      prettier:
-        specifier: ^3.0.0
-        version: 3.0.0
-      prettier-config-custom:
-        specifier: workspace:*
-        version: link:../packages/prettier-config-custom
       tsconfig:
         specifier: workspace:*
         version: link:../packages/tsconfig
