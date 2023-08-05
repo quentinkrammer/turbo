@@ -33,4 +33,6 @@ const server = createHTTPServer({
   router: appRouter,
 });
 
-server.listen(3000);
+const PORT = 3000;
+server.listen(PORT);
+console.log(`Server listening on port ${PORT}...`);
