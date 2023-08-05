@@ -6,7 +6,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
   links: [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     httpBatchLink({
-      url: "http://localhost:3000",
+      url: "http://localhost:3000/trpc",
     }),
   ],
 });

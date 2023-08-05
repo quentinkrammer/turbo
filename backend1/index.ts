@@ -1,1 +1,1 @@
-export type { AppRouter } from "./src/index.js";
+export type { AppRouter } from "./src/router.js";

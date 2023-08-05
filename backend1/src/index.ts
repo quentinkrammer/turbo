@@ -1,38 +1,24 @@
-import { createHTTPServer } from "@trpc/server/adapters/standalone";
-import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
-import { publicProcedure, router } from "./trpc.js";
-type User = { id: string; name: string };
-const db: Array<User> = [];
+import { inferAsyncReturnType } from "@trpc/server";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import cors from "cors";
+import express from "express";
+import { appRouter } from "./router.js";
+// created for each request
+const createContext = ({
+  req,
+  res,
+}: trpcExpress.CreateExpressContextOptions) => ({}); // no context
+type Context = inferAsyncReturnType<typeof createContext>;
 
-const appRouter = router({
-  userList: publicProcedure.query(async () => {
-    return db;
+const app = express();
+app.use(cors({ origin: "http://localhost:5173" })).use(
+  "/trpc",
+  trpcExpress.createExpressMiddleware({
+    router: appRouter,
+    createContext,
   }),
-  userById: publicProcedure.input(z.string()).query(async (opts) => {
-    const { input: searchId } = opts;
-
-    // Retrieve the user with the given ID
-    const user = db.find(({ id }) => id === searchId);
-
-    return user;
-  }),
-  userCreate: publicProcedure.input(z.string()).mutation(async (opts) => {
-    const { input: name } = opts;
-
-    // Create a new user in the database
-    const user = db.push({ name, id: uuidv4() });
-
-    return user;
-  }),
-});
-
-export type AppRouter = typeof appRouter;
-
-const server = createHTTPServer({
-  router: appRouter,
-});
+);
 
 const PORT = 3000;
-server.listen(PORT);
+app.listen(PORT);
 console.log(`Server listening on port ${PORT}...`);

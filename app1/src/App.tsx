@@ -3,7 +3,6 @@ import { CustomTable } from "shared";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { selectTableData, sortName } from "./redux/tableSlice";
 import { trpc } from "./trpcClient";
-// const random_name = require("node-random-name") as () => string;
 
 function App() {
   const dispatch = useAppDispatch();
