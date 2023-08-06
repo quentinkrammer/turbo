@@ -1,8 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
+import uniqueId from "uniqueid";
 import { z } from "zod";
 import { db } from "./mockDb.js";
 import { publicProcedure, router } from "./trpc.js";
 
+const createId = uniqueId();
 export const appRouter = router({
   userList: publicProcedure.query(async () => {
     return db;
@@ -19,7 +20,7 @@ export const appRouter = router({
     const { input: name } = opts;
 
     // Create a new user in the database
-    const user = db.push({ name, id: uuidv4() });
+    const user = db.push({ name, id: createId() });
 
     return user;
   }),
