@@ -2,26 +2,26 @@ import { useCallback, useEffect, useState } from "react";
 import { CustomTable } from "shared";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectTableData, sortName } from "../redux/tableSlice";
-import { trpc } from "../trpcClient";
+import { trpcClient } from "../trpcClient";
 
 export function TrpcAndReduxTestTable() {
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectTableData);
   const [users, setUsers] = useState<
-    Awaited<ReturnType<(typeof trpc)["userList"]["query"]>>
+    Awaited<ReturnType<(typeof trpcClient)["userList"]["query"]>>
   >([]);
   const [mutatedUsers, setMutatedUsers] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await trpc.userList.query();
+      const users = await trpcClient.userList.query();
       setUsers(users);
     };
     fetchUsers().catch(console.error);
   }, [mutatedUsers]);
 
   const onCreateUser = useCallback(async () => {
-    await trpc.userCreate.mutate("Jerry");
+    await trpcClient.userCreate.mutate("Jerry");
     setMutatedUsers((old) => !old);
   }, []);
 
