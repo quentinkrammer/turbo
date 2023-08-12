@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useCallback, useMemo, useState } from "react";
 import { CustomTable } from "shared";
 import { z } from "zod";
 
@@ -21,6 +22,8 @@ const dataSchema = z.array(
 type Data = z.infer<typeof dataSchema>;
 
 export const LargeTable: React.FC<object> = () => {
+  const [isSortedAsc, setIsSortedAsc] = useState(true);
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["repoData"],
     queryFn: () =>
@@ -31,6 +34,22 @@ export const LargeTable: React.FC<object> = () => {
       }),
   });
 
+  const onSort = useCallback(() => {
+    setIsSortedAsc((old) => !old);
+  }, []);
+
+  const sorted = useMemo(() => {
+    return (
+      data?.sort(function (a, b) {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return isSortedAsc ? -1 : 1;
+        if (nameA > nameB) return isSortedAsc ? 1 : -1;
+        return 0;
+      }) ?? []
+    );
+  }, [data, isSortedAsc]);
+
   if (isLoading) {
     return "Loading...";
   }
@@ -38,5 +57,13 @@ export const LargeTable: React.FC<object> = () => {
     console.log(error);
     return "Error :(";
   }
-  return <CustomTable data={data ?? []} />;
+
+  return (
+    <>
+      <button type="button" onClick={onSort}>
+        sort
+      </button>
+      <CustomTable data={sorted} />
+    </>
+  );
 };
