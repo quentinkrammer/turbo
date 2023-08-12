@@ -1,9 +1,15 @@
-import { TrpcAndReduxTestTable } from "./components/TrpcAndReduxTestTable";
+import { LargeTable } from "./components/LargeTable";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <TrpcAndReduxTestTable />
+      <QueryClientProvider client={queryClient}>
+        <LargeTable />
+      </QueryClientProvider>
     </>
   );
 }
