@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "./store";
 
 type TableState = Array<{
   _id: string;
@@ -13523,7 +13522,31 @@ const initialData2: TableConfig["data"] = [
 
 const initialState: TableConfig = {
   sort: true,
-  data: initialData2,
+  data: initialData2.concat(
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+    initialData2,
+  ),
 };
 
 export const tableSlice = createSlice({
@@ -13545,7 +13568,7 @@ export const tableSlice = createSlice({
         }),
       };
 
-      console.log("sorted");
+      console.log("sorted", sorted.data.length);
       return sorted;
     },
   },
@@ -13553,7 +13576,7 @@ export const tableSlice = createSlice({
 
 export const { read, sortName } = tableSlice.actions;
 
-export const selectTableData = (state: RootState) =>
-  state.table.data.slice(1, 5);
+export const selectTableData = (state: { table: { data: any } }) =>
+  state.table.data;
 
 export default tableSlice.reducer;
