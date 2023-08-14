@@ -1,7 +1,7 @@
-import { useDebouncedValue } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ComponentProps, useCallback, useMemo, useState } from "react";
+import Highlighter from "react-highlight-words";
 import { CustomTable } from "shared";
 import { z } from "zod";
 
@@ -27,7 +27,6 @@ export const LargeTable: React.FC<object> = () => {
     queryKey: ["repoData"],
     queryFn: () =>
       axios.get<Data>("http://localhost:3000/data").then((res) => {
-        console.log(res);
         const data = dataSchema.parse(res.data);
         return data;
       }),
@@ -60,7 +59,9 @@ export const LargeTable: React.FC<object> = () => {
 function useFilteredAndSortedData(data: Data) {
   const [isSortedAsc, setIsSortedAsc] = useState(true);
   const [filter, setFilter] = useState("");
-  const [debouncedFilter] = useDebouncedValue(filter, 200);
+  // const [debouncedFilter] = useDebouncedValue(filter, 500);
+
+  const filterRegex = useMemo(() => new RegExp(filter, "gmi"), [filter]);
 
   const onSort = useCallback(() => {
     setIsSortedAsc((old) => !old);
@@ -71,8 +72,8 @@ function useFilteredAndSortedData(data: Data) {
   >((e) => setFilter(e.target.value), [setFilter]);
 
   const filtered = useMemo(() => {
-    return data?.filter(({ name }) => name.includes(debouncedFilter));
-  }, [data, debouncedFilter]);
+    return data?.filter(({ name }) => name.match(filterRegex));
+  }, [data, filterRegex]);
 
   const sorted = useMemo(() => {
     return (
@@ -86,5 +87,17 @@ function useFilteredAndSortedData(data: Data) {
     );
   }, [filtered, isSortedAsc]);
 
-  return { callbacks: { onSort, onFilter }, data: sorted, filter };
+  const highlighted = sorted.map((cellData) => {
+    return {
+      ...cellData,
+      name: (
+        <Highlighter
+          textToHighlight={cellData.name}
+          searchWords={[filterRegex]}
+        />
+      ),
+    };
+  });
+
+  return { callbacks: { onSort, onFilter }, data: highlighted, filter };
 }
