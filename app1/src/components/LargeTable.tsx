@@ -1,3 +1,4 @@
+import { useDebouncedValue } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ComponentProps, useCallback, useMemo, useState } from "react";
@@ -59,9 +60,12 @@ export const LargeTable: React.FC<object> = () => {
 function useFilteredAndSortedData(data: Data) {
   const [isSortedAsc, setIsSortedAsc] = useState(true);
   const [filter, setFilter] = useState("");
-  // const [debouncedFilter] = useDebouncedValue(filter, 500);
+  const [debouncedFilter] = useDebouncedValue(filter, 200);
 
-  const filterRegex = useMemo(() => new RegExp(filter, "gmi"), [filter]);
+  const filterRegex = useMemo(
+    () => new RegExp(debouncedFilter, "gmi"),
+    [debouncedFilter],
+  );
 
   const onSort = useCallback(() => {
     setIsSortedAsc((old) => !old);

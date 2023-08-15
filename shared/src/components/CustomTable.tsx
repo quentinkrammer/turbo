@@ -1,10 +1,11 @@
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { ReactNode } from "react";
 
 export type CustomTableProps<TObj extends object> = {
   data: Array<TObj>;
 };
-export function CustomTable<TObj extends { [index: string]: number | string }>({
+export function CustomTable<TObj extends { [index: string]: ReactNode }>({
   data,
 }: CustomTableProps<TObj>) {
   const orderedColumnKeys = Object.keys(data[0] ?? []);
