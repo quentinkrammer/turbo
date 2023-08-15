@@ -49,7 +49,6 @@ export const LargeTable: React.FC<object> = () => {
   if (error || !data) {
     return "Error :(";
   }
-  console.log("modalIndex", modalIndex);
   return (
     <>
       <button type="button" onClick={onSort}>
@@ -63,7 +62,7 @@ export const LargeTable: React.FC<object> = () => {
         {modalIndex &&
           Object.entries(data.at(modalIndex) ?? {}).map(([key, value]) => {
             return (
-              <tr>
+              <tr key={key}>
                 <td>{key}</td>
                 <td>{value}</td>
               </tr>
