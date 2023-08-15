@@ -1,6 +1,8 @@
 import { useDebouncedValue } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { isNil } from "lodash";
+import { Dialog } from "primereact/dialog";
 import { ComponentProps, useCallback, useMemo, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { CustomTable } from "shared";
@@ -37,30 +39,54 @@ export const LargeTable: React.FC<object> = () => {
     callbacks: { onFilter, onSort },
     data: filteredAndSortedData,
     filter,
+    modalIndex,
+    setModalIndex,
   } = useFilteredAndSortedData(data ?? []);
 
   if (isLoading) {
     return "Loading...";
   }
-  if (error) {
-    console.log(error);
+  if (error || !data) {
     return "Error :(";
   }
+  console.log("modalIndex", modalIndex);
   return (
     <>
       <button type="button" onClick={onSort}>
         sort
       </button>
       <input value={filter} onChange={onFilter} />
+      <Dialog
+        visible={!isNil(modalIndex)}
+        onHide={() => setModalIndex(undefined)}
+      >
+        {modalIndex &&
+          Object.entries(data.at(modalIndex) ?? {}).map(([key, value]) => {
+            return (
+              <tr>
+                <td>{key}</td>
+                <td>{value}</td>
+              </tr>
+            );
+          })}
+      </Dialog>
       <CustomTable data={filteredAndSortedData} />
     </>
   );
 };
-
+//
+//
+//
+//
+//
+//
+//
+//
 function useFilteredAndSortedData(data: Data) {
   const [isSortedAsc, setIsSortedAsc] = useState(true);
   const [filter, setFilter] = useState("");
   const [debouncedFilter] = useDebouncedValue(filter, 200);
+  const [modalIndex, setModalIndex] = useState<number>();
 
   const filterRegex = useMemo(
     () => new RegExp(debouncedFilter, "gmi"),
@@ -91,7 +117,7 @@ function useFilteredAndSortedData(data: Data) {
     );
   }, [filtered, isSortedAsc]);
 
-  const highlighted = sorted.map((cellData) => {
+  const highlighted = sorted.map((cellData, index) => {
     return {
       ...cellData,
       name: (
@@ -100,8 +126,19 @@ function useFilteredAndSortedData(data: Data) {
           searchWords={[filterRegex]}
         />
       ),
+      button: (
+        <button type="button" onClick={() => setModalIndex(index)}>
+          Modal
+        </button>
+      ),
     };
   });
 
-  return { callbacks: { onSort, onFilter }, data: highlighted, filter };
+  return {
+    callbacks: { onSort, onFilter },
+    data: highlighted,
+    filter,
+    modalIndex,
+    setModalIndex,
+  };
 }

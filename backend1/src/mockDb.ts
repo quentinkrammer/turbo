@@ -13496,8 +13496,8 @@ const data: MockData = [
     email: "genevagomez@ovation.com",
   },
 ];
-
-export const mockData: MockData = data.concat(
+export const mockData: MockData = data;
+export const mockData3: MockData = data.concat(
   data,
   data,
   data,
