@@ -13496,7 +13496,7 @@ const data: MockData = [
     email: "genevagomez@ovation.com",
   },
 ];
-const copyNumber = 20;
+const copyNumber = 30;
 let repeatData: MockData = [];
 for (let i = 0; i < copyNumber; i++) {
   repeatData = repeatData.concat(data);
