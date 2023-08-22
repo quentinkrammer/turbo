@@ -17,7 +17,7 @@ const TODO_TOGGLED = "TODO_TOGGLED";
 
 export const addTodo = <T extends number>(text: T, foo: number) =>
   ({
-    type: ADD_TODO,
+    type: "ADD_TODO",
     payload: { text, id: nanoid(), foo },
   }) as const;
 
@@ -26,11 +26,17 @@ export const todoToggled = (id: string) => ({
   payload: { id },
 });
 
+export const addTodos = <T extends number>(text: T, foo: number) =>
+  ({
+    type: "ADD_TODOS",
+    payload: { text, id: nanoid(), foo },
+  }) as const;
+
 const actions = {
   incremenCounter: () => ({ type: "counter/incremented" }) as const,
   decrementCounter: () => ({ type: "counter/decremented" }) as const,
   addTodo: (foo: number) => addTodo(42, foo),
-  // foo: createActionWithPayload<number>("foo"),
+  //  addTodos: (foo: number) => addTodos(33, foo),
 } as const;
 
 type State = { value: number };
@@ -46,10 +52,14 @@ function counterReducer(
     case "ADD_TODO":
       return { value: action.payload.foo };
     default:
-      return state;
+      assertUnreachable(action);
   }
 }
 
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
 const store = createStore(counterReducer);
+
+function assertUnreachable(x: never): never {
+  throw new Error("Didn't expect to get here");
+}
