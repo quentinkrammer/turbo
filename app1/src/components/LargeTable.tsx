@@ -1,4 +1,3 @@
-import { useDebouncedValue } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { isNil } from "lodash";
@@ -36,9 +35,8 @@ export const LargeTable: React.FC<object> = () => {
   });
 
   const {
-    callbacks: { onFilter, onSort },
+    callbacks: { onEnterFilter, onSort },
     data: filteredAndSortedData,
-    filter,
     modalIndex,
     setModalIndex,
   } = useFilteredAndSortedData(data ?? []);
@@ -54,7 +52,7 @@ export const LargeTable: React.FC<object> = () => {
       <button type="button" onClick={onSort}>
         sort
       </button>
-      <input value={filter} onChange={onFilter} />
+      <input onKeyDown={onEnterFilter} />
       <Dialog
         visible={!isNil(modalIndex)}
         onHide={() => setModalIndex(undefined)}
@@ -84,21 +82,25 @@ export const LargeTable: React.FC<object> = () => {
 function useFilteredAndSortedData(data: Data) {
   const [isSortedAsc, setIsSortedAsc] = useState(true);
   const [filter, setFilter] = useState("");
-  const [debouncedFilter] = useDebouncedValue(filter, 200);
+  // const [debouncedFilter] = useDebouncedValue(filter, 200);
   const [modalIndex, setModalIndex] = useState<number>();
 
-  const filterRegex = useMemo(
-    () => new RegExp(debouncedFilter, "gmi"),
-    [debouncedFilter],
-  );
+  const filterRegex = useMemo(() => new RegExp(filter, "gmi"), [filter]);
 
   const onSort = useCallback(() => {
     setIsSortedAsc((old) => !old);
   }, [setIsSortedAsc]);
 
-  const onFilter = useCallback<
-    NonNullable<ComponentProps<"input">["onChange"]>
-  >((e) => setFilter(e.target.value), [setFilter]);
+  const onEnterFilter = useCallback<
+    NonNullable<ComponentProps<"input">["onKeyDown"]>
+  >(
+    ({ key, target }) => {
+      if (key === "Enter" && "value" in target) {
+        setFilter(target.value as string);
+      }
+    },
+    [setFilter],
+  );
 
   const filtered = useMemo(() => {
     return data?.filter(({ name }) => name.match(filterRegex));
@@ -134,7 +136,7 @@ function useFilteredAndSortedData(data: Data) {
   });
 
   return {
-    callbacks: { onSort, onFilter },
+    callbacks: { onSort, onEnterFilter },
     data: highlighted,
     filter,
     modalIndex,

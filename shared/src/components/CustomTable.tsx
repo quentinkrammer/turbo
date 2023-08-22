@@ -12,7 +12,7 @@ export function CustomTable<TObj extends { [index: string]: ReactNode }>({
 
   return (
     <>
-      <DataTable value={data} paginator rows={5}>
+      <DataTable value={data} paginator rows={10}>
         {orderedColumnKeys.map((column) => (
           <Column
             key={column}
