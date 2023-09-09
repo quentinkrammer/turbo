@@ -32,10 +32,24 @@ export const addTodos = <T extends number>(text: T, foo: number) =>
     payload: { text, id: nanoid(), foo },
   }) as const;
 
+export interface Action<T, P, U> {
+  readonly type: T;
+  readonly payload?: P;
+  readonly value?: U;
+}
+
+export function createAction<U, T extends string, P>(
+  type: T,
+  payload?: P,
+): (value: U) => Action<T, P, U> {
+  return (value: U) => ({ type, payload, value });
+}
+
 const actions = {
   incremenCounter: () => ({ type: "counter/incremented" }) as const,
   decrementCounter: () => ({ type: "counter/decremented" }) as const,
   addTodo: (foo: number) => addTodo(42, foo),
+  doStuff: createAction("DO_STUFF", 3),
   //  addTodos: (foo: number) => addTodos(33, foo),
 } as const;
 
@@ -51,6 +65,8 @@ function counterReducer(
       return { value: state.value - 1 };
     case "ADD_TODO":
       return { value: action.payload.foo };
+    case "DO_STUFF":
+      action.payload;
     default:
       assertUnreachable(action);
   }
